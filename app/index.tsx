@@ -1,15 +1,23 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import ExerciseListItem from "../components/ExerciseListItem";
+import { techniques } from "../assets/data/techniques";
 
-const techniques = ["Box Breathing", "4-7-8 Breathing", "5-5-5 Breathing"];
 const IndexScreen = () => {
   return (
     <View>
       <FlatList
         data={techniques}
-        renderItem={({ item }) => <Text>{item}</Text>}
+        renderItem={({ item }) => <ExerciseListItem technique={item} />}
+        contentContainerStyle={{ padding: 10, gap: 10 }}
       />
     </View>
   );
 };
 
 export default IndexScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "pink",
+  },
+});
