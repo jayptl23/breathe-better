@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -9,10 +9,10 @@ import {
   View,
 } from "react-native";
 import { techniques } from "../assets/data/techniques";
+import { StepType } from "../types";
 
 const TechniqueDetails = () => {
   const { id } = useLocalSearchParams();
-  // console.log(id);
   const technique = techniques.find((t) => t.id.toString() === id);
 
   if (!technique) {
@@ -22,19 +22,20 @@ const TechniqueDetails = () => {
   const growAnim = useRef(new Animated.Value(1)).current;
 
   const [done, setDone] = useState(false);
-  const [step, setStep] = useState<"inhale" | "hold1" | "hold2" | "exhale">(
-    "inhale"
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState<number>(
+    technique.inhaleTime
   );
-  const [timeRemaining, setTimeRemaining] = useState(technique.inhaleTime); // Initialize with 4 seconds
+  const currentStep = technique.steps[currentStepIndex];
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     let interval: NodeJS.Timeout;
 
     if (!done) {
-      if (step === "inhale") {
+      if (currentStep.type === StepType.inhale) {
         augment();
-      } else if (step === "exhale") {
+      } else if (currentStep.type === StepType.exhale) {
         shrink();
       }
 
@@ -42,43 +43,23 @@ const TechniqueDetails = () => {
         setTimeRemaining((prev) => prev - 1);
       }, 1000);
 
-      if (step === "inhale") {
-        timer = setTimeout(() => {
-          setStep("hold1");
-          setTimeRemaining(technique.holdTime);
-        }, technique.inhaleTime * 1000);
-      } else if (step === "exhale") {
-        timer = setTimeout(() => {
-          setStep("hold2");
-          setTimeRemaining(technique.holdTime);
-        }, technique.exhaleTime * 1000);
-      } else if (step === "hold1") {
-        timer = setTimeout(() => {
-          setStep("exhale");
-          setTimeRemaining(technique.exhaleTime);
-        }, technique.holdTime * 1000);
-      } else if (step === "hold2") {
-        timer = setTimeout(() => {
+      timer = setTimeout(() => {
+        if (currentStepIndex < technique.steps.length - 1) {
+          setCurrentStepIndex(currentStepIndex + 1);
+          setTimeRemaining(technique.steps[currentStepIndex + 1].duration);
+        } else {
           setDone(true);
-        }, technique.holdTime * 1000);
-      }
+        }
+      }, currentStep.duration * 1000);
     }
 
     return () => {
       clearTimeout(timer);
       clearInterval(interval);
     };
-  }, [step, done]);
-
-  const formatStep = (step: string): string => {
-    if (step === "hold1" || step === "hold2") {
-      step = "hold";
-    }
-    return step.charAt(0).toUpperCase() + step.slice(1).toLowerCase();
-  };
+  }, [currentStepIndex, done]);
 
   const augment = () => {
-    // Will change grow value to 2.5 in 4 seconds
     Animated.timing(growAnim, {
       toValue: 2.5,
       duration: technique.inhaleTime * 1000,
@@ -87,7 +68,6 @@ const TechniqueDetails = () => {
   };
 
   const shrink = () => {
-    // Will change grow value to 1 in 4 seconds
     Animated.timing(growAnim, {
       toValue: 1,
       duration: technique.exhaleTime * 1000,
@@ -96,17 +76,20 @@ const TechniqueDetails = () => {
   };
 
   const resetExercise = () => {
-    setStep("inhale");
+    setCurrentStepIndex(0);
+    setTimeRemaining(technique.inhaleTime);
     setDone(false);
-    setTimeRemaining(technique.inhaleTime); // Reset time for the initial step
   };
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: technique.name }} />
       <Animated.View
         style={[styles.circle, { transform: [{ scale: growAnim }] }]}
       >
-        <Text style={styles.label}>{done ? "Done" : formatStep(step)}</Text>
+        <Text style={styles.label}>
+          {done ? "Done" : technique.steps[currentStepIndex].type}
+        </Text>
         {!done && <Text>{timeRemaining}s</Text>}
       </Animated.View>
 
