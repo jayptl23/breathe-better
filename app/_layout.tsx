@@ -1,10 +1,13 @@
 import { Stack } from "expo-router";
+import { SettingsProvider } from "../providers/SettingsProvider";
 
 const RootLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerTitle: "Exercises" }} />
-    </Stack>
+    <SettingsProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerTitle: "Exercises" }} />
+      </Stack>
+    </SettingsProvider>
   );
 };
 

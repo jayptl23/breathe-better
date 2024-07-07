@@ -10,10 +10,13 @@ import {
 } from "react-native";
 import { techniques } from "../assets/data/techniques";
 import { StepType } from "../types";
+import { useSettings } from "../providers/SettingsProvider";
 
 const TechniqueDetails = () => {
   const { id } = useLocalSearchParams();
   const technique = techniques.find((t) => t.id.toString() === id);
+
+  const { continuousMode } = useSettings();
 
   if (!technique) {
     return <Text>Technique not found</Text>;
@@ -48,7 +51,7 @@ const TechniqueDetails = () => {
           setCurrentStepIndex(currentStepIndex + 1);
           setTimeRemaining(technique.steps[currentStepIndex + 1].duration);
         } else {
-          setDone(true);
+          continuousMode ? resetExercise() : setDone(true);
         }
       }, currentStep.duration * 1000);
     }
