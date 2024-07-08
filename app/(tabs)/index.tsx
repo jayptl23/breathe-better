@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import ExerciseListItem from "../components/ExerciseListItem";
-import { techniques } from "../assets/data/techniques";
+import ExerciseListItem from "../../components/ExerciseListItem";
+import { techniques } from "../../assets/data/techniques";
 
 const IndexScreen = () => {
   return (

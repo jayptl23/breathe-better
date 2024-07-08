@@ -5,7 +5,7 @@ const RootLayout = () => {
   return (
     <SettingsProvider>
       <Stack>
-        <Stack.Screen name="index" options={{ headerTitle: "Exercises" }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </SettingsProvider>
   );
