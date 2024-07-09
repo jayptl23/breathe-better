@@ -42,3 +42,27 @@ export const techniques: Technique[] = [
     ],
   },
 ];
+
+export const meditations = [
+  {
+    id: 1,
+    name: "Beach Sounds",
+    thumbnail: "beach",
+  },
+  {
+    id: 2,
+    name: "Rain Sounds",
+    thumbnail: "rain",
+  },
+  {
+    id: 3,
+    name: "Water Fountain",
+    thumbnail: "waterFountain",
+  },
+];
+
+export const imageMap: Record<string, any> = {
+  beach: require("../images/beach.jpg"),
+  rain: require("../images/rain.jpg"),
+  waterFountain: require("../images/water-fountain.jpg"),
+};
