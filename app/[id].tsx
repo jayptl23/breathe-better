@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   circle: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "skyblue",
+    backgroundColor: "#34d399",
     width: 100,
     aspectRatio: 1,
     borderRadius: 100,

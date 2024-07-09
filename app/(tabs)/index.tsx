@@ -48,7 +48,7 @@ export default IndexScreen;
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "beige",
+    backgroundColor: "#f1f5f9",
     padding: 10,
   },
   box: {
@@ -77,8 +77,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sectionTitle: {
+    color: "#047857",
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "700",
     textAlign: "center",
     marginVertical: 8,
   },
