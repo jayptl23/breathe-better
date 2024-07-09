@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Technique } from "../types";
 
 type ExcerciseListItemProps = {
   technique: Technique;
@@ -21,12 +22,15 @@ export default ExerciseListItem;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    padding: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderRadius: 10,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
   },
   name: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 22,
     marginBottom: 10,
   },
   description: {
